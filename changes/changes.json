@@ -1,0 +1,186 @@
+[
+  {
+    "folder": "apps",
+    "sub": [
+      {
+        "folder": "apps",
+        "sub": [
+          {
+            "folder": "avatax",
+            "actions_by_ref": [
+              "default_but_process_switch",
+              "turbo_patch"
+            ]
+          },
+          {
+            "folder": "cms-v2",
+            "actions_by_ref": [
+              "turbo_patch"
+            ],
+            "sub": [
+              {
+                "folder": "src",
+                "actions_by_ref": [
+                  "default_patch"
+                ]
+              }
+            ]
+          },
+          {
+            "folder": "crm",
+            "sub": [
+              {
+                "folder": "src",
+                "actions_by_ref": [
+                  "default_patch"
+                ]
+              }
+            ]
+          },
+          {
+            "folder": "data-importer",
+            "actions_by_ref": [
+              "default_but_process_switch",
+              "turbo_patch"
+            ]
+          },
+          {
+            "folder": "emails-and-messages",
+            "actions_by_ref": [
+              "turbo_patch"
+            ],
+            "sub": [
+              {
+                "folder": "src",
+                "actions_by_ref": [
+                  "default_patch"
+                ]
+              }
+            ]
+          },
+          {
+            "folder": "invoices",
+            "actions_by_ref": [
+              "turbo_patch"
+            ],
+            "sub": [
+              {
+                "folder": "src",
+                "actions_by_ref": [
+                  "default_patch"
+                ]
+              }
+            ]
+          },
+          {
+            "folder": "klaviyo",
+            "actions_by_ref": [
+              "default_patch",
+              "turbo_patch"
+            ]
+          },
+          {
+            "folder": "products-feed",
+            "actions_by_ref": [
+              "turbo_patch"
+            ],
+            "sub": [
+              {
+                "folder": "src",
+                "actions_by_ref": [
+                  "default_patch"
+                ]
+              }
+            ]
+          },
+          {
+            "folder": "search",
+            "actions_by_ref": [
+              "turbo_patch",
+              "default_patch"
+            ]
+          },
+          {
+            "folder": "segment",
+            "actions_by_ref": [
+              "turbo_patch"
+            ],
+            "sub": [
+              {
+                "folder": "src",
+                "actions_by_ref": [
+                  "default_patch"
+                ]
+              }
+            ]
+          },
+          {
+            "folder": "slack",
+            "actions_by_ref": [
+              "turbo_patch"
+            ],
+            "sub": [
+              {
+                "folder": "src",
+                "sub": [
+                  {
+                    "folder": "lib",
+                    "actions_by_ref": [
+                      "default_but_process_switch"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "folder": "taxjar",
+            "actions_by_ref": [
+              "turbo_patch",
+              "default_but_process_switch"
+            ]
+          }
+        ]
+      },
+      {
+        "folder": "saleor-app-abandoned-checkouts",
+        "actions_by_ref": [
+          "default_but_process_switch"
+        ]
+      },
+      {
+        "folder": "saleor-app-payment-authorize.net",
+        "sub": [
+          {
+            "folder": "src",
+            "actions_by_ref": [
+              "default_but_env_switch"
+            ]
+          }
+        ]
+      },
+      {
+        "folder": "saleor-app-payment-klarna",
+        "sub": [
+          {
+            "folder": "src",
+            "actions_by_ref": [
+              "default_but_env_switch"
+            ]
+          }
+        ]
+      },
+      {
+        "folder": "saleor-app-payment-stripe",
+        "sub": [
+          {
+            "folder": "src",
+            "actions_by_ref": [
+              "default_but_env_switch"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

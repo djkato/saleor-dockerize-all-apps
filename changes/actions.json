@@ -1,0 +1,92 @@
+[
+  {
+    "name": "default_patch",
+    "actions": [
+      {
+        "target": "redis_apl.ts",
+        "action_type": "Create",
+        "snippets": [
+          {
+            "snippet": "redis_apl.ts"
+          }
+        ]
+      },
+      {
+        "target": "saleor-app.ts",
+        "action_type": "Insert",
+        "snippets": [
+          {
+            "after": "switch (aplType)",
+            "snippet": "case_redisapl.ts"
+          },
+          {
+            "after": "import",
+            "snippet": "import_redisapl.ts"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "turbo_patch",
+    "actions": [
+      {
+        "target": "turbo.json",
+        "action_type": "Insert",
+        "snippets": [
+          {
+            "after": "APP_API_BASE_URL",
+            "snippet": "turbo_env.ts"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "default_but_process_switch",
+    "actions": [
+      {
+        "target": "redis_apl.ts",
+        "action_type": "Create",
+        "snippets": [
+          {
+            "snippet": "redis_apl.ts"
+          }
+        ]
+      },
+      {
+        "target": "saleor-app.ts",
+        "action_type": "Insert",
+        "snippets": [
+          {
+            "after": "switch (process.env.APL)",
+            "snippet": "case_redisapl.ts"
+          },
+          {
+            "after": "import",
+            "snippet": "import_redisapl.ts"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "default_but_env_switch",
+    "actions": [
+      {
+        "target": "saleor-app.ts",
+        "action_type": "Insert",
+        "snippets": [
+          {
+            "after": "import",
+            "snippet": "import_redisapl.ts"
+          },
+          {
+            "after": "switch (env.APL)",
+            "snippet": "case_redisapl.ts"
+          }
+        ]
+      }
+    ]
+  }
+]
