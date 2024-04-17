@@ -47,7 +47,7 @@ for i in ${redis_apl_target_paths[*]}; do
 	echo "copying redis_apl.ts to ./all_apps/$i"
 	cp -f "$REDIS_APL_PATH" "./all_apps/$i"
 	# always copies next to saleor-app.ts, so let's add some files to that file too
-	rg -l "switch \(process.env.APL\)" -t ts
+	find . -name "saleor-app.ts" -exec sed "/switch/ r $CURR_PWD/changes/case_redisapl.ts" {} \;
 done
 
 for i in ${app_paths[*]}; do
