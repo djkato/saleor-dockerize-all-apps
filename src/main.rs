@@ -35,7 +35,7 @@ fn main() -> Result<(), io::Error> {
         + &first_half;
 
     let final_content = first_half + &second_half;
-    // fs::write(file, final_content)?;
+    fs::write("output.ts", &final_content)?;
     println!("{}", final_content);
 
     Ok(())
