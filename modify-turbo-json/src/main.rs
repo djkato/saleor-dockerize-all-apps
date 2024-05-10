@@ -12,11 +12,16 @@ fn main() -> Result<(), io::Error> {
     let mut file = read_to_string(&args[1])?;
 
     let mut output = "".to_owned();
+    let mut is_done = false;
     for line in file.as_mut().lines() {
         output.push_str(&(line.to_owned() + "\n"));
+        if is_done {
+            continue;
+        };
         if line.contains(r#""env":"#) {
             let case = fs::read_to_string("./changes/snippets/turbo_env.ts")?;
             output.push_str(&case);
+            is_done = true;
         }
     }
     fs::write(&args[1], output)?;

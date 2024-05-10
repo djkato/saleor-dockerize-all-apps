@@ -1,4 +1,8 @@
-
+[tasks.apply-changes]
+alias = "apply-changes"
+script = '''
+./changes.sh
+'''
 # Configures the default task to run
 [tasks.default]
 alias = "build-containers"
@@ -17,7 +21,8 @@ docker tag $(docker image ls -q --filter=label=service=chef-simple-payment-gatew
 [tasks.build-containers]
 dependencies = [
   "delete-images",
-  "build-sitemap-generator",
+  "apply-changes",
+  "build-",
   "build-simple-payment-gateway",
 ]
 

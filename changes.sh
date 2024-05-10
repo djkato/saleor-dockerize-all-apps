@@ -1,7 +1,8 @@
 #!/bin/bash
 
-REDIS_APL_PATH="./changes/snippets/redis_apl.ts"
 CURR_PWD="$(pwd)"
+REDIS_APL_PATH="$CURR_PWD/changes/snippets/redis_apl.ts"
+DOCKERFILE_PATH="$CURR_PWD/Dockerfile"
 
 app_paths=(
 	"apps/apps/cms-v2"
@@ -42,22 +43,37 @@ redis_apl_target_paths=(
 )
 
 echo "copying redis_apls..."
-
-# always copies next to saleor-app.ts, so let's add some files to that file too
-find . -name "saleor-app.ts" -exec cargo run --package modify-saleor-app -- {} \;
-echo "modified $i to use redis_apl"
-find . -name "turbo.json" -exec cargo run --package modify-turbo-json -- {} \;
-echo "modified $i to turbo.json"
-
 for i in ${redis_apl_target_paths[*]}; do
 	echo "copying redis_apl.ts to ./all_apps/$i"
 	cp -f "$REDIS_APL_PATH" "./all_apps/$i"
 done
+
+find ./all_apps/apps -name "saleor-app.ts" -exec cargo run --package modify-saleor-app -- {} \;
+echo "pached all_apps/apps/**/saleor-app.ts"
+
+find ./all_apps/saleor-app-abandoned-checkouts -name "saleor-app.ts" -exec cargo run --package modify-saleor-app -- {} \;
+echo "pached all_apps/saleor-app-abandoned-checkouts/**/saleor-app.ts"
+
+find ./all_apps/apps/apps -name "turbo.json" -exec cargo run --package modify-turbo-json -- {} \;
+echo "pached all_apps/**/turbo.json"
+
+cd ./all_apps/
+for i in "saleor-app-payment-klarna" "saleor-app-payment-stripe" "saleor-app-payment-authorize.net"; do
+	cd "$i"
+	git apply "$CURR_PWD/patches/$i/env.mjs.patch"
+	git apply "$CURR_PWD/patches/$i/saleor-app.ts.patch"
+	git apply "$CURR_PWD/patches/$i/next.config.mjs.patch"
+	echo "patched $i"
+	cd ..
+done
+
+cd "$CURR_PWD"
 
 for i in ${app_paths[*]}; do
 	cd "./all_apps/$i"
 	echo $(pwd)
 	pnpm i
 	pnpm i ioredis
+	cp -f "$DOCKERFILE_PATH" .
 	cd "$CURR_PWD"
 done
