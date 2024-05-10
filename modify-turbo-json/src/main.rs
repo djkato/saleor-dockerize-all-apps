@@ -1,7 +1,6 @@
 use std::{
-    fs::{self, File},
-    io::{self, BufRead, BufReader},
-    path::PathBuf,
+    fs::{self, read_to_string},
+    io,
 };
 
 fn main() -> Result<(), io::Error> {
@@ -10,33 +9,17 @@ fn main() -> Result<(), io::Error> {
         std::process::exit(1)
     }
 
-    let file = File::open(&args[1])?;
-    // let contents = fs::read_to_string(&file)?;
-    let reader = BufReader::new(file);
+    let mut file = read_to_string(&args[1])?;
 
-    let mut first_half = "".to_owned();
-    let mut second_half = "".to_owned();
-    let mut found_switch = false;
-    for line in reader.lines() {
-        let Ok(line) = line else { continue };
-        match found_switch {
-            true => first_half.push_str(&line),
-            false => second_half.push_str(&line),
-        }
-
-        if line.contains("switch") {
-            found_switch = true;
+    let mut output = "".to_owned();
+    for line in file.as_mut().lines() {
+        output.push_str(&(line.to_owned() + "\n"));
+        if line.contains(r#""env":"#) {
+            let case = fs::read_to_string("./changes/snippets/turbo_env.ts")?;
+            output.push_str(&case);
         }
     }
-    first_half.push_str(&fs::read_to_string("./changes/snippets/case_redisapl.ts")?);
-    first_half = r#"import { RedisAPL } from "./redis_apl"
-    "#
-    .to_owned()
-        + &first_half;
-
-    let final_content = first_half + &second_half;
-    fs::write("output.ts", &final_content)?;
-    println!("{}", final_content);
+    fs::write(&args[1], output)?;
 
     Ok(())
 }

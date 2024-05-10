@@ -1,6 +1,6 @@
 import Redis from "ioredis";
 
-import type {
+import {
   APL,
   AplConfiguredResult,
   AplReadyResult,
@@ -61,11 +61,11 @@ export class RedisAPL implements APL {
 
   async set(authData: AuthData): Promise<void> {
     const res = await this.client.set(
-      this.prepareKey(authData.saleorApiUrl),
+      this.prepareKey(authData.domain),
       JSON.stringify(authData),
     );
     console.log(
-      `REDIS: SET FOR ${this.prepareKey(authData.saleorApiUrl)}: `,
+      `REDIS: SET FOR ${this.prepareKey(authData.domain)}: `,
       res,
     );
   }

@@ -1,0 +1,22 @@
+diff --git a/src/saleor-app.ts b/src/saleor-app.ts
+index 42457c6..5eec90c 100644
+--- a/src/saleor-app.ts
++++ b/src/saleor-app.ts
+@@ -1,3 +1,4 @@
++import { RedisAPL } from "./redis_apl"
+ import { SaleorApp } from "@saleor/app-sdk/saleor-app";
+ import { FileAPL, UpstashAPL, SaleorCloudAPL } from "@saleor/app-sdk/APL";
+ import { invariant } from "./lib/invariant";
+@@ -18,6 +19,12 @@ const getApl = async () => {
+   }
+   /* c8 ignore start */
+   switch (env.APL) {
++    case "redis": {
++      if (!process.env.REDIS_URL) throw new Error("Missing redis url");
++      if (!process.env.APP_API_BASE_URL)
++        throw new Error("Redis relies on APP_API_BASE_URL to store keys, please set env variable");
++      return new RedisAPL({ redisUrl: process.env.REDIS_URL, appApiBaseUrl: process.env.APP_API_BASE_URL });
++    }
+     case "upstash":
+       invariant(env.UPSTASH_URL, "Missing UPSTASH_URL env variable!");
+       invariant(env.UPSTASH_TOKEN, "Missing UPSTASH_TOKEN env variable!");

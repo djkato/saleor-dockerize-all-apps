@@ -1,0 +1,14 @@
+diff --git a/next.config.mjs b/next.config.mjs
+index f8dd123..38717b1 100644
+--- a/next.config.mjs
++++ b/next.config.mjs
+@@ -14,6 +14,9 @@ import { withSentryConfig } from "@sentry/nextjs";
+ 
+ /** @type {import('next').NextConfig} */
+ const config = {
++  eslint: {
++    ignoreDuringBuilds: true
++  },
+   reactStrictMode: true,
+   /** @param { import("webpack").Configuration } config */
+   webpack(config) {

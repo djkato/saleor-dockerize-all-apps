@@ -43,11 +43,15 @@ redis_apl_target_paths=(
 
 echo "copying redis_apls..."
 
+# always copies next to saleor-app.ts, so let's add some files to that file too
+find . -name "saleor-app.ts" -exec cargo run --package modify-saleor-app -- {} \;
+echo "modified $i to use redis_apl"
+find . -name "turbo.json" -exec cargo run --package modify-turbo-json -- {} \;
+echo "modified $i to turbo.json"
+
 for i in ${redis_apl_target_paths[*]}; do
 	echo "copying redis_apl.ts to ./all_apps/$i"
 	cp -f "$REDIS_APL_PATH" "./all_apps/$i"
-	# always copies next to saleor-app.ts, so let's add some files to that file too
-	# find . -name "saleor-app.ts" -exec sed "/switch/ r $CURR_PWD/changes/case_redisapl.ts" {} \;
 done
 
 for i in ${app_paths[*]}; do
