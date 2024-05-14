@@ -34,9 +34,9 @@ workspace = false
 dependencies = [
   "delete-images",
   "build-abandoned-checkouts",
-  "build-payment-stripe",
-  "build-payment-klarna",
-  "build-payment-authorize.net",
+  "build-stripe",
+  "build-klarna",
+  "build-authorize-net",
   "build-avatax",
   "build-cms-v2",
   "build-crm",
