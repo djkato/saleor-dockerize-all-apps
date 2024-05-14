@@ -1,29 +1,72 @@
 [env]
 CONTAINER_PUSH_URL = "ghcr.io/djkato"
+ALL_APPS = [
+  "abandoned-checkouts",
+  "payment-stripe",
+  "payment-klarna",
+  "payment-authorize.net",
+  "avatax",
+  "cms-v2",
+  "crm",
+  "data-importer",
+  "emails-and-messages",
+  "invoices",
+  "klaviyo",
+  "products-feed",
+  "search",
+  "segment",
+  "slack",
+  "smtp",
+  "taxjar",
+]
 
-[tasks.apply-changes]
-alias = "apply-changes"
-script = '''
-./changes.sh
-'''
-# Configures the default task to run
 [tasks.default]
 alias = "build"
 
 # Overrides the default build task
 [tasks.build]
-dependencies = ["delete-images", "apply-changes", "build-arg-app"]
+alias = "build-all"
 
-[tasks.push-containers]
+[tasks.build-all]
+dependencies = [
+  "delete-images",
+  "build-abandoned-checkouts",
+  "build-payment-stripe",
+  "build-payment-klarna",
+  "build-payment-authorize.net",
+  "build-avatax",
+  "build-cms-v2",
+  "build-crm",
+  "build-data-importer",
+  "build-emails-and-messages",
+  "build-invoices",
+  "build-klaviyo",
+  "build-products-feed",
+  "build-search",
+  "build-segment",
+  "build-slack",
+  "build-smtp",
+  "build-taxjar",
+
+]
+
+[tasks.apply-changes]
 script = '''
-docker push ${CONTAINER_PUSH_URL}/saleor-sitemap-generator:latest
-docker push ${CONTAINER_PUSH_URL}/saleor-simple-payment-gateway:latest
+./changes.sh
+'''
+
+[tasks.push]
+script = '''
+for i in ${ALL_APPS[*]}; do
+  docker push ${CONTAINER_PUSH_URL}/saleor-sitemap-generator:latest
+done
 '''
 
 [tasks.delete-images]
 script = '''
-docker rmi -f $(docker image ls -q --filter=label=service=chef-sitemap-generator) 2>&1 || true
-docker rmi -f $(docker image ls -q --filter=label=service=chef-simple-payment-gateway) 2>&1 || true
+for i in ${ALL_APPS[*]}; do
+  docker rmi -f $(docker image ls -q --filter=label=service=saleor-app-$i) 2>&1 || true
+done
 '''
 
 [tasks.build-avatax]
@@ -78,18 +121,6 @@ env = { "APP" = "smtp" }
 extend = "build-arg-app"
 env = { "APP" = "taxjar" }
 
-[tasks.build-arg-app]
-private = true
-script = '''
-cd all_apps/apps
-docker build . --build-arg SERVICE="saleor-app-${APP}" \
-               --build-arg TITLE="djkato/saleor-app-${APP}" \
-               --build-arg DESC="Saleor app for ${APP}" \
-               --build-arg URL="https://github.com/saleor/saleor-app-${APP}" \
-               --build-arg SOUCRE="https://github.com/saleor/saleor-app-${APP}" \
-               --build-arg AUTHORS="Saleor <hello@saleor.io>, Djkáťo <djkatovfx@gmail.com>" \
-               -t ${CONTAINER_PUSH_URL}/saleor-app-${APP}
-'''
 ## DEPRECATED APPS:
 
 [tasks.build-stripe]
@@ -109,6 +140,22 @@ extend = "build-arg-old-app"
 env = { "APP" = "payment-authorize.net", "PUBLIC_PATH" = "/app/example/public" }
 
 
+## GENERALIZED BUILD SCRIPTS
+
+[tasks.build-arg-app]
+private = true
+script = '''
+cd all_apps/apps
+docker build . --build-arg SERVICE="saleor-app-${APP}" \
+               --build-arg TITLE="djkato/saleor-app-${APP}" \
+               --build-arg DESC="Saleor app for ${APP}" \
+               --build-arg URL="https://github.com/saleor/saleor-app-${APP}" \
+               --build-arg SOUCRE="https://github.com/saleor/saleor-app-${APP}" \
+               --build-arg AUTHORS="Saleor <hello@saleor.io>, Djkáťo <djkatovfx@gmail.com>" \
+               -t ${CONTAINER_PUSH_URL}/saleor-app-${APP} \
+               .
+'''
+
 [tasks.build-arg-old-app]
 private = true
 script = '''
@@ -120,5 +167,6 @@ docker build . --build-arg PUBLIC_PATH="${PUBLIC_PATH}" \
                --build-arg URL="https://github.com/saleor/saleor-app-${APP}" \
                --build-arg SOUCRE="https://github.com/saleor/saleor-app-${APP}" \
                --build-arg AUTHORS="Saleor <hello@saleor.io>, Djkáťo <djkatovfx@gmail.com>" \
-               -t ${CONTAINER_PUSH_URL}/saleor-app-${APP}
+               -t ${CONTAINER_PUSH_URL}/saleor-app-${APP} \
+               .
 '''
