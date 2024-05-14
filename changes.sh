@@ -41,6 +41,9 @@ redis_apl_target_paths=(
 	"saleor-app-payment-klarna/src"
 	"saleor-app-payment-stripe/src"
 )
+echo "copying Dockerfiles..."
+cp -f ./apps.Dockerfile ./all_apps/apps/
+cp -f ./abandoned-cart.Dockerfile ./all_apps/apps/
 
 echo "copying redis_apls..."
 for i in ${redis_apl_target_paths[*]}; do
@@ -49,6 +52,9 @@ for i in ${redis_apl_target_paths[*]}; do
 done
 
 find ./all_apps/apps -name "saleor-app.ts" -exec cargo run --package modify-saleor-app -- {} \;
+echo "pached all_apps/apps/**/saleor-app.ts"
+
+find ./all_apps/apps -name "next.config.js" -exec cargo run --package modify-saleor-app -- {} \;
 echo "pached all_apps/apps/**/saleor-app.ts"
 
 find ./all_apps/saleor-app-abandoned-checkouts -name "saleor-app.ts" -exec cargo run --package modify-saleor-app -- {} \;
