@@ -69,6 +69,7 @@ done
 
 # HAVE TO DEFINE APP ENV VAR IN CALL, EG: `APP=avatax cargo make push`
 [tasks.push]
+condition = { env_set = ["APP"] }
 workspace = false
 script = '''
 docker push ${CONTAINER_PUSH_URL}/saleor-app-${APP}
