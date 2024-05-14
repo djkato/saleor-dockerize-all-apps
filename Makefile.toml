@@ -205,7 +205,7 @@ docker build . --build-arg TARGET_APP="${APP}" \
                --build-arg TITLE="djkato/saleor-app-${APP}" \
                --build-arg DESC="Saleor app for ${APP}" \
                --build-arg URL="https://github.com/saleor/saleor-app-${APP}" \
-               --build-arg SOUCRE="https://github.com/saleor/saleor-app-${APP}" \
+               --build-arg SOURCE="https://github.com/djkato/saleor-dockerize-all-apps" \
                --build-arg AUTHORS="Saleor <hello@saleor.io>, Djkáťo <djkatovfx@gmail.com>" \
                -t ${CONTAINER_PUSH_URL}/saleor-app-${APP}:${VERSION}
 '''
@@ -221,7 +221,7 @@ docker build . --build-arg PUBLIC_PATH="${PUBLIC_PATH}" \
                --build-arg TITLE="djkato/saleor-app-${APP}" \
                --build-arg DESC="Saleor app for Authorize.net" \
                --build-arg URL="https://github.com/saleor/saleor-app-${APP}" \
-               --build-arg SOUCRE="https://github.com/saleor/saleor-app-${APP}" \
+               --build-arg SOURCE="https://github.com/djkato/saleor-dockerize-all-apps" \
                --build-arg AUTHORS="Saleor <hello@saleor.io>, Djkáťo <djkatovfx@gmail.com>" \
                -t ${CONTAINER_PUSH_URL}/saleor-app-${APP}:${VERSION}
 '''
