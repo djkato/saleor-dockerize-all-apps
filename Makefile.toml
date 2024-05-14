@@ -1,3 +1,6 @@
+[env]
+CONTAINER_PUSH_URL = "ghcr.io/djkato"
+
 [tasks.apply-changes]
 alias = "apply-changes"
 script = '''
@@ -5,31 +8,16 @@ script = '''
 '''
 # Configures the default task to run
 [tasks.default]
-alias = "build-containers"
+alias = "build"
 
 # Overrides the default build task
 [tasks.build]
-alias = "build-containers"
-
-
-[tasks.build-simple-payment-gateway]
-script = '''
-docker build --rm --target chef-simple-payment-gateway .
-docker tag $(docker image ls -q --filter=label=service=chef-simple-payment-gateway) ghcr.io/djkato/saleor-simple-payment-gateway
-'''
-
-[tasks.build-containers]
-dependencies = [
-  "delete-images",
-  "apply-changes",
-  "build-",
-  "build-simple-payment-gateway",
-]
+dependencies = ["delete-images", "apply-changes", "build-arg-app"]
 
 [tasks.push-containers]
 script = '''
-docker push ghcr.io/djkato/saleor-sitemap-generator:latest
-docker push ghcr.io/djkato/saleor-simple-payment-gateway:latest
+docker push ${CONTAINER_PUSH_URL}/saleor-sitemap-generator:latest
+docker push ${CONTAINER_PUSH_URL}/saleor-simple-payment-gateway:latest
 '''
 
 [tasks.delete-images]
@@ -37,17 +25,100 @@ script = '''
 docker rmi -f $(docker image ls -q --filter=label=service=chef-sitemap-generator) 2>&1 || true
 docker rmi -f $(docker image ls -q --filter=label=service=chef-simple-payment-gateway) 2>&1 || true
 '''
+
+[tasks.build-avatax]
+extend = "build-arg-app"
+env = { "APP" = "avatax" }
+
+[tasks.build-cms-v2]
+extend = "build-arg-app"
+env = { "APP" = "cms-v2" }
+
+[tasks.build-crm]
+extend = "build-arg-app"
+env = { "APP" = "crm" }
+
+[tasks.build-data-importer]
+extend = "build-arg-app"
+env = { "APP" = "data-importer" }
+
+[tasks.build-emails-and-messages]
+extend = "build-arg-app"
+env = { "APP" = "emails-and-messages" }
+
+[tasks.build-invoices]
+extend = "build-arg-app"
+env = { "APP" = "invoices" }
+
+[tasks.build-klaviyo]
+extend = "build-arg-app"
+env = { "APP" = "klaviyo" }
+
+[tasks.build-products-feed]
+extend = "build-arg-app"
+env = { "APP" = "products-feed" }
+
+[tasks.build-search]
+extend = "build-arg-app"
+env = { "APP" = "search" }
+
+[tasks.build-segment]
+extend = "build-arg-app"
+env = { "APP" = "segment" }
+
+[tasks.build-slack]
+extend = "build-arg-app"
+env = { "APP" = "slack" }
+
+[tasks.build-smtp]
+extend = "build-arg-app"
+env = { "APP" = "smtp" }
+
+[tasks.build-taxjar]
+extend = "build-arg-app"
+env = { "APP" = "taxjar" }
+
+[tasks.build-arg-app]
+private = true
+script = '''
+cd all_apps/apps
+docker build . --build-arg SERVICE="saleor-app-${APP}" \
+               --build-arg TITLE="djkato/saleor-app-${APP}" \
+               --build-arg DESC="Saleor app for ${APP}" \
+               --build-arg URL="https://github.com/saleor/saleor-app-${APP}" \
+               --build-arg SOUCRE="https://github.com/saleor/saleor-app-${APP}" \
+               --build-arg AUTHORS="Saleor <hello@saleor.io>, Djkáťo <djkatovfx@gmail.com>" \
+               -t ${CONTAINER_PUSH_URL}/saleor-app-${APP}
+'''
 ## DEPRECATED APPS:
 
-# abandoned checkouts needs no further patches :)
+[tasks.build-stripe]
+extend = "build-arg-old-app"
+env = { "APP" = "payment-stripe", "PUBLIC_PATH" = "/app/public" }
 
-# SKIP_ENV_VALIDATION=true pnpm run build
-[tasks.build-payment-authorized-net]
+[tasks.build-klarna]
+extend = "build-arg-old-app"
+env = { "APP" = "payment-klarna", "PUBLIC_PATH" = "/app/public" }
+
+[tasks.build-abandoned-checkouts]
+extend = "build-arg-old-app"
+env = { "APP" = "abandoned-checkouts", "PUBLIC_PATH" = "/app/src/public" }
+
+[tasks.build-authorize-net]
+extend = "build-arg-old-app"
+env = { "APP" = "payment-authorize.net", "PUBLIC_PATH" = "/app/example/public" }
+
+
+[tasks.build-arg-old-app]
+private = true
 script = '''
-cd all_apps/saleor-app-payment-authorized.net
-rm -rf example
-
-
-docker build --rm --target chef-sitemap-generator .
-docker tag $(docker image ls -q --filter=label=service=chef-sitemap-generator) ghcr.io/djkato/saleor-sitemap-generator
+cd all_apps/saleor-app-${APP}
+docker build . --build-arg PUBLIC_PATH="${PUBLIC_PATH}" \
+               --build-arg SERVICE="saleor-app-${APP}" \
+               --build-arg TITLE="djkato/saleor-app-${APP}" \
+               --build-arg DESC="Saleor app for Authorize.net" \
+               --build-arg URL="https://github.com/saleor/saleor-app-${APP}" \
+               --build-arg SOUCRE="https://github.com/saleor/saleor-app-${APP}" \
+               --build-arg AUTHORS="Saleor <hello@saleor.io>, Djkáťo <djkatovfx@gmail.com>" \
+               -t ${CONTAINER_PUSH_URL}/saleor-app-${APP}
 '''

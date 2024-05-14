@@ -55,3 +55,17 @@ ENV PORT 3000
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
 CMD HOSTNAME="0.0.0.0" node server.js
+ARG SERVICE
+ARG TITLE
+ARG DESC
+ARG URL
+ARG SOURCE
+ARG AUTHORS
+ARG LICENSES
+LABEL service="$SERVICE"\
+  org.opencontainers.image.title="$TITLE"\
+  org.opencontainers.image.description="$DESC" \
+  org.opencontainers.image.url="$URL"\
+  org.opencontainers.image.source="$SOURCE"\
+  org.opencontainers.image.authors="$AUTHORS"\
+  org.opencontainers.image.licenses="$LICENSES"

@@ -58,3 +58,17 @@ COPY --from=installer --chown=nextjs:nodejs /app/node_modules ./node_modules
 
 WORKDIR /app/apps/$TARGET_APP
 CMD node server.js
+ARG SERVICE
+ARG TITLE
+ARG DESC
+ARG URL
+ARG SOURCE
+ARG AUTHORS
+ARG LICENSES
+LABEL service="$SERVICE"\
+  org.opencontainers.image.title="$TITLE"\
+  org.opencontainers.image.description="$DESC" \
+  org.opencontainers.image.url="$URL"\
+  org.opencontainers.image.source="$SOURCE"\
+  org.opencontainers.image.authors="$AUTHORS"\
+  org.opencontainers.image.licenses="$LICENSES"
