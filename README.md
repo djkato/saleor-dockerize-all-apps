@@ -6,24 +6,28 @@ In this repo I created bash scripts and modifications to Saleor that allow for b
 Current apps in repo:
 - saleor/apps
   - avatax
-  - cms-v2
-  - crm
+  - cms-v2¹
+  - crm¹
   - data-importer
   - emails-and-messages
   - invoices
   - klaviyo
   - products-feed
   - search
-  - segment
-  - slack
-  - smtp
+  - segment¹
+  - slack¹
+  - smtp¹
   - taxjar
 - saelor/abandoned-checkouts
 - saelor/payment-stripe
 - saelor/payment-klarna
 - saelor/payment-authorize.net¹
 
-¹ - doesn't build yet :(
+¹ - doesn't build yet :(, Some I am able to fix later, some prolly not
+
+## Caveats
+
+All apps from saleor/apps are upwards of 1.5gb in size, because of [this pnpm workspace error](https://github.com/vercel/next.js/issues/65636)
 
 ## How to use
 - `./changes.sh` - applies git patches and batch edits via rust to add RedisAPL to all apps, and allow them to build via other tweaks.

@@ -36,19 +36,19 @@ dependencies = [
   "build-abandoned-checkouts",
   "build-stripe",
   "build-klarna",
-  # "build-authorize-net",
+  # "build-authorize-net", -- Error: 11.26 Type error: Cannot find module '../generated/graphql' or its corresponding type declarations.
   "build-avatax",
-  "build-cms-v2",
-  "build-crm",
+  # "build-cms-v2", -- Error: Unable to find 'schema-ast'
+  # "build-crm", -- Error: Unable to find 'schema-ast'
   "build-data-importer",
   "build-emails-and-messages",
   "build-invoices",
   "build-klaviyo",
   "build-products-feed",
   "build-search",
-  "build-segment",
-  "build-slack",
-  "build-smtp",
+  # "build-segment", -- Error: Unable to find 'schema-ast'
+  # "build-slack",  -- Error: 5.551 slack:build: Type error: Type '"redis"' is not comparable to type '"file" | "upstash" | "saleor-cloud"'.
+  # "build-smtp", -- 8.542 smtp:build: Type error: Cannot find module './redis_apl' or its corresponding type declarations.
   "build-taxjar",
 
 ]
