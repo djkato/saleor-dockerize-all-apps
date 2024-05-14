@@ -20,7 +20,7 @@ COPY --from=deps /app/node_modules ./node_modules
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
 ENV NEXT_TELEMETRY_DISABLED 1
-
+ENV SKIP_ENV_VALIDATION 1
 RUN corepack enable pnpm && pnpm build
 
 # Production image, copy all the files and run next
