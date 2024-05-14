@@ -21,7 +21,9 @@ Current apps in repo:
 - saelor/abandoned-checkouts
 - saelor/payment-stripe
 - saelor/payment-klarna
-- saelor/payment-authorize.net
+- saelor/payment-authorize.net¹
+
+¹ - doesn't build yet :(
 
 ## How to use
 - `./changes.sh` - applies git patches and batch edits via rust to add RedisAPL to all apps, and allow them to build via other tweaks.

@@ -5,6 +5,7 @@ REDIS_APL_PATH="$CURR_PWD/changes/snippets/redis_apl.ts"
 OLD_REDIS_APL_PATH="$CURR_PWD/changes/snippets/redis_apl_old_sdk.ts"
 APPS_DOCKERFILE_PATH="$CURR_PWD/apps.Dockerfile"
 OTHER_DOCKERFILE_PATH="$CURR_PWD/other.Dockerfile"
+DOCKERIGNORE_PATH = "$CURR_PWD/.dockerignore"
 
 app_paths=(
 	"apps/apps/cms-v2"
@@ -50,6 +51,13 @@ cp -f ./other.Dockerfile ./all_apps/saleor-app-payment-klarna/Dockerfile
 cp -f ./other.Dockerfile ./all_apps/saleor-app-payment-authorize.net/Dockerfile
 cp -f ./other.Dockerfile ./all_apps/saleor-app-abandoned-checkouts/Dockerfile
 
+echo "copying dockerignores..."
+cp -f ./.dockerignore ./all_apps/apps/
+cp -f ./.dockerignore ./all_apps/saleor-app-payment-stripe/
+cp -f ./.dockerignore ./all_apps/saleor-app-payment-klarna/
+cp -f ./.dockerignore ./all_apps/saleor-app-payment-authorize.net/
+cp -f ./.dockerignore ./all_apps/saleor-app-abandoned-checkouts/
+
 echo "copying redis_apls..."
 for i in ${redis_apl_target_paths[*]}; do
 	echo "copying redis_apl.ts to ./all_apps/$i"
@@ -60,16 +68,16 @@ done
 cp -f "$OLD_REDIS_APL_PATH" "./all_apps/saleor-app-abandoned-checkouts/redis_apl.ts"
 
 # mass patch apps to use redis_apl and build in standalone
-find ./all_apps/apps -name "saleor-app.ts" -exec cargo run --package modify-saleor-app -- {} \;
+find ./all_apps/apps -name "saleor-app.ts" -exec cargo run --package modify-saleor-app -- {} \; >/dev/null 2>&1
 echo "pached all_apps/apps/**/saleor-app.ts"
 
-find ./all_apps/apps -name "next.config.js" -exec cargo run --package modify-next-config -- {} \;
+find ./all_apps/apps -name "next.config.js" -exec cargo run --package modify-next-config -- {} \; >/dev/null 2>&1
 echo "pached all_apps/apps/**/saleor-app.ts"
 
-find ./all_apps/saleor-app-abandoned-checkouts -name "saleor-app.ts" -exec cargo run --package modify-saleor-app -- {} \;
+find ./all_apps/saleor-app-abandoned-checkouts -name "saleor-app.ts" -exec cargo run --package modify-saleor-app -- {} \; >/dev/null 2>&1
 echo "pached all_apps/saleor-app-abandoned-checkouts/**/saleor-app.ts"
 
-find ./all_apps/apps/apps -name "turbo.json" -exec cargo run --package modify-turbo-json -- {} \;
+find ./all_apps/apps/apps -name "turbo.json" -exec cargo run --package modify-turbo-json -- {} \; >/dev/null 2>&1
 echo "pached all_apps/**/turbo.json"
 
 cd ./all_apps/
@@ -87,8 +95,8 @@ cd "$CURR_PWD"
 
 for i in ${app_paths[*]}; do
 	cd "./all_apps/$i"
-	echo $(pwd)
 	# pnpm i
-	pnpm i ioredis
+	pnpm i ioredis >/dev/null
+	echo "installed ioredis for $i"
 	cd "$CURR_PWD"
 done

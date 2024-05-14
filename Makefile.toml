@@ -36,7 +36,7 @@ dependencies = [
   "build-abandoned-checkouts",
   "build-stripe",
   "build-klarna",
-  "build-authorize-net",
+  # "build-authorize-net",
   "build-avatax",
   "build-cms-v2",
   "build-crm",
@@ -87,79 +87,79 @@ done
 workspace = false
 extend = "build-arg-app"
 private = false
-env = { "APP" = "avatax" }
+env = { "APP_NAME" = "app-avatax", "APP_DIR" = "avatax" }
 
 [tasks.build-cms-v2]
 workspace = false
 extend = "build-arg-app"
 private = false
-env = { "APP" = "cms-v2" }
+env = { "APP_NAME" = "cms-v2", "APP_DIR" = "cms-v2" }
 
 [tasks.build-crm]
 workspace = false
 extend = "build-arg-app"
 private = false
-env = { "APP" = "crm" }
+env = { "APP_NAME" = "crm", "APP_DIR" = "crm" }
 
 [tasks.build-data-importer]
 workspace = false
 extend = "build-arg-app"
 private = false
-env = { "APP" = "data-importer" }
+env = { "APP_NAME" = "data-importer", "APP_DIR" = "data-importer" }
 
 [tasks.build-emails-and-messages]
 workspace = false
 extend = "build-arg-app"
 private = false
-env = { "APP" = "emails-and-messages" }
+env = { "APP_NAME" = "emails-and-messages", "APP_DIR" = "emails-and-messages" }
 
 [tasks.build-invoices]
 workspace = false
 extend = "build-arg-app"
 private = false
-env = { "APP" = "invoices" }
+env = { "APP_NAME" = "invoices", "APP_DIR" = "invoices" }
 
 [tasks.build-klaviyo]
 workspace = false
 extend = "build-arg-app"
 private = false
-env = { "APP" = "klaviyo" }
+env = { "APP_NAME" = "klaviyo", "APP_DIR" = "klaviyo" }
 
 [tasks.build-products-feed]
 workspace = false
 extend = "build-arg-app"
 private = false
-env = { "APP" = "products-feed" }
+env = { "APP_NAME" = "products-feed", "APP_DIR" = "products-feed" }
 
 [tasks.build-search]
 workspace = false
 extend = "build-arg-app"
 private = false
-env = { "APP" = "search" }
+env = { "APP_NAME" = "search", "APP_DIR" = "search" }
 
 [tasks.build-segment]
 workspace = false
 extend = "build-arg-app"
 private = false
-env = { "APP" = "segment" }
+env = { "APP_NAME" = "segment", "APP_DIR" = "segment" }
 
 [tasks.build-slack]
 workspace = false
 extend = "build-arg-app"
 private = false
-env = { "APP" = "slack" }
+env = { "APP_NAME" = "slack", "APP_DIR" = "slack" }
 
 [tasks.build-smtp]
 workspace = false
 extend = "build-arg-app"
 private = false
-env = { "APP" = "smtp" }
+env = { "APP_NAME" = "smtp", "APP_DIR" = "smtp" }
 
 [tasks.build-taxjar]
 workspace = false
 extend = "build-arg-app"
 private = false
-env = { "APP" = "taxjar" }
+env = { "APP_NAME" = "app-taxjar", "APP_DIR" = "taxjar" }
 
 ## DEPRECATED APPS:
 
@@ -196,18 +196,19 @@ private = true
 script = '''
 cd all_apps/apps
 
-cd ./apps/${APP}
+cd ./apps/${APP_DIR}
 VERSION=$(npm pkg get version --workspaces=false | tr -d '"')
 cd ../../
 
-docker build . --build-arg TARGET_APP="${APP}" \
-               --build-arg SERVICE="saleor-app-${APP}" \
-               --build-arg TITLE="djkato/saleor-app-${APP}" \
-               --build-arg DESC="Saleor app for ${APP}" \
-               --build-arg URL="https://github.com/saleor/saleor-app-${APP}" \
+docker build . --build-arg APP_NAME="${APP_NAME}" \
+               --build-arg APP_DIR="${APP_DIR}" \
+               --build-arg SERVICE="saleor-app-${APP_NAME}" \
+               --build-arg TITLE="djkato/saleor-app-${APP_NAME}" \
+               --build-arg DESC="Saleor app for ${APP_NAME}" \
+               --build-arg URL="https://github.com/saleor/saleor-app-${APP_NAME}" \
                --build-arg SOURCE="https://github.com/djkato/saleor-dockerize-all-apps" \
                --build-arg AUTHORS="Saleor <hello@saleor.io>, Djkáťo <djkatovfx@gmail.com>" \
-               -t ${CONTAINER_PUSH_URL}/saleor-app-${APP}:${VERSION}
+               -t ${CONTAINER_PUSH_URL}/saleor-app-${APP_NAME}:${VERSION}
 '''
 
 [tasks.build-arg-old-app]
