@@ -11,7 +11,7 @@ fn main() -> Result<(), io::Error> {
 
     let mut file = read_to_string(&args[1])?;
 
-    let mut output = fs::read_to_string("../../changes/snippets/import-path-app-next.config.js")?;
+    let mut output = fs::read_to_string("./changes/snippets/import-path-app-next.config.js")?;
     let mut is_done = false;
     for line in file.as_mut().lines() {
         output.push_str(&(line.to_owned() + "\n"));
