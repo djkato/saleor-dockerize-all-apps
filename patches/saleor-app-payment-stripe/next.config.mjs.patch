@@ -1,13 +1,13 @@
 diff --git a/next.config.mjs b/next.config.mjs
-index f8dd123..0b20ad0 100644
+index f8dd123..b60392c 100644
 --- a/next.config.mjs
 +++ b/next.config.mjs
-@@ -14,6 +14,9 @@ import { withSentryConfig } from "@sentry/nextjs";
+@@ -14,6 +14,10 @@ import { withSentryConfig } from "@sentry/nextjs";
  
  /** @type {import('next').NextConfig} */
  const config = {
 +  eslint: {
-+    ignoreDuringBuilds: true,
++    ignoreDuringBuilds: true
 +  },
 +  output: "standalone",
    reactStrictMode: true,
