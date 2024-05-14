@@ -213,6 +213,7 @@ docker build . --build-arg TARGET_APP="${APP}" \
 [tasks.build-arg-old-app]
 workspace = false
 private = true
+env = { "SKIP_ENV_VALIDATION" = "true" }
 script = '''
 cd all_apps/saleor-app-${APP}
 VERSION=$(npm pkg get version --workspaces=false | tr -d '"')
