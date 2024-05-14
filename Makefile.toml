@@ -21,13 +21,16 @@ ALL_APPS = [
 ]
 
 [tasks.default]
+workspace = false
 alias = "build"
 
 # Overrides the default build task
 [tasks.build]
+workspace = false
 alias = "build-all"
 
 [tasks.build-all]
+workspace = false
 dependencies = [
   "delete-images",
   "build-abandoned-checkouts",
@@ -51,18 +54,28 @@ dependencies = [
 ]
 
 [tasks.apply-changes]
+workspace = false
 script = '''
 ./changes.sh
 '''
 
-[tasks.push]
+[tasks.push-all]
+workspace = false
 script = '''
 for i in ${ALL_APPS[*]}; do
-  docker push ${CONTAINER_PUSH_URL}/saleor-sitemap-generator:latest
+  docker push ${CONTAINER_PUSH_URL}/saleor-app-$i
 done
 '''
 
+# HAVE TO DEFINE APP ENV VAR IN CALL, EG: `APP=avatax cargo make push`
+[tasks.push]
+workspace = false
+script = '''
+docker push ${CONTAINER_PUSH_URL}/saleor-app-${APP}
+'''
+
 [tasks.delete-images]
+workspace = false
 script = '''
 for i in ${ALL_APPS[*]}; do
   docker rmi -f $(docker image ls -q --filter=label=service=saleor-app-$i) 2>&1 || true
@@ -70,96 +83,138 @@ done
 '''
 
 [tasks.build-avatax]
+workspace = false
 extend = "build-arg-app"
+private = false
 env = { "APP" = "avatax" }
 
 [tasks.build-cms-v2]
+workspace = false
 extend = "build-arg-app"
+private = false
 env = { "APP" = "cms-v2" }
 
 [tasks.build-crm]
+workspace = false
 extend = "build-arg-app"
+private = false
 env = { "APP" = "crm" }
 
 [tasks.build-data-importer]
+workspace = false
 extend = "build-arg-app"
+private = false
 env = { "APP" = "data-importer" }
 
 [tasks.build-emails-and-messages]
+workspace = false
 extend = "build-arg-app"
+private = false
 env = { "APP" = "emails-and-messages" }
 
 [tasks.build-invoices]
+workspace = false
 extend = "build-arg-app"
+private = false
 env = { "APP" = "invoices" }
 
 [tasks.build-klaviyo]
+workspace = false
 extend = "build-arg-app"
+private = false
 env = { "APP" = "klaviyo" }
 
 [tasks.build-products-feed]
+workspace = false
 extend = "build-arg-app"
+private = false
 env = { "APP" = "products-feed" }
 
 [tasks.build-search]
+workspace = false
 extend = "build-arg-app"
+private = false
 env = { "APP" = "search" }
 
 [tasks.build-segment]
+workspace = false
 extend = "build-arg-app"
+private = false
 env = { "APP" = "segment" }
 
 [tasks.build-slack]
+workspace = false
 extend = "build-arg-app"
+private = false
 env = { "APP" = "slack" }
 
 [tasks.build-smtp]
+workspace = false
 extend = "build-arg-app"
+private = false
 env = { "APP" = "smtp" }
 
 [tasks.build-taxjar]
+workspace = false
 extend = "build-arg-app"
+private = false
 env = { "APP" = "taxjar" }
 
 ## DEPRECATED APPS:
 
 [tasks.build-stripe]
+workspace = false
 extend = "build-arg-old-app"
+private = false
 env = { "APP" = "payment-stripe", "PUBLIC_PATH" = "/app/public" }
 
 [tasks.build-klarna]
+workspace = false
 extend = "build-arg-old-app"
+private = false
 env = { "APP" = "payment-klarna", "PUBLIC_PATH" = "/app/public" }
 
 [tasks.build-abandoned-checkouts]
+workspace = false
 extend = "build-arg-old-app"
+private = false
 env = { "APP" = "abandoned-checkouts", "PUBLIC_PATH" = "/app/src/public" }
 
 [tasks.build-authorize-net]
+workspace = false
 extend = "build-arg-old-app"
+private = false
 env = { "APP" = "payment-authorize.net", "PUBLIC_PATH" = "/app/example/public" }
 
 
 ## GENERALIZED BUILD SCRIPTS
 
 [tasks.build-arg-app]
+workspace = false
 private = true
 script = '''
 cd all_apps/apps
-docker build . --build-arg SERVICE="saleor-app-${APP}" \
+
+cd ./apps/${APP}
+VERSION=$(npm pkg get version --workspaces=false | tr -d '"')
+cd ../../
+
+docker build . --build-arg TARGET_APP="${APP}" \
+               --build-arg SERVICE="saleor-app-${APP}" \
                --build-arg TITLE="djkato/saleor-app-${APP}" \
                --build-arg DESC="Saleor app for ${APP}" \
                --build-arg URL="https://github.com/saleor/saleor-app-${APP}" \
                --build-arg SOUCRE="https://github.com/saleor/saleor-app-${APP}" \
                --build-arg AUTHORS="Saleor <hello@saleor.io>, Djkáťo <djkatovfx@gmail.com>" \
-               -t ${CONTAINER_PUSH_URL}/saleor-app-${APP} \
-               .
+               -t ${CONTAINER_PUSH_URL}/saleor-app-${APP}:${VERSION}
 '''
 
 [tasks.build-arg-old-app]
+workspace = false
 private = true
 script = '''
 cd all_apps/saleor-app-${APP}
+VERSION=$(npm pkg get version --workspaces=false | tr -d '"')
 docker build . --build-arg PUBLIC_PATH="${PUBLIC_PATH}" \
                --build-arg SERVICE="saleor-app-${APP}" \
                --build-arg TITLE="djkato/saleor-app-${APP}" \
@@ -167,6 +222,5 @@ docker build . --build-arg PUBLIC_PATH="${PUBLIC_PATH}" \
                --build-arg URL="https://github.com/saleor/saleor-app-${APP}" \
                --build-arg SOUCRE="https://github.com/saleor/saleor-app-${APP}" \
                --build-arg AUTHORS="Saleor <hello@saleor.io>, Djkáťo <djkatovfx@gmail.com>" \
-               -t ${CONTAINER_PUSH_URL}/saleor-app-${APP} \
-               .
+               -t ${CONTAINER_PUSH_URL}/saleor-app-${APP}:${VERSION}
 '''
