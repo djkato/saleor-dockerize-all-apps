@@ -9,6 +9,7 @@ index f8dd123..38717b1 100644
 +  eslint: {
 +    ignoreDuringBuilds: true
 +  },
++  output: "standalone",
    reactStrictMode: true,
    /** @param { import("webpack").Configuration } config */
    webpack(config) {
