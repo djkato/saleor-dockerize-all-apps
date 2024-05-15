@@ -70,6 +70,7 @@ ARG SOURCE
 ARG AUTHORS
 ARG LICENSES
 LABEL service="$SERVICE"\
+  src="saleor-dockerize-all-apps"\
   org.opencontainers.image.title="$TITLE"\
   org.opencontainers.image.description="$DESC" \
   org.opencontainers.image.url="$URL"\
