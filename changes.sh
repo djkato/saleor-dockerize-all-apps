@@ -105,5 +105,6 @@ done
 
 # Individual patches
 cd ./all_apps/apps
-git appy "$CURR_PWD/patches/apps/slack/env.d.ts.patch"
+git apply "$CURR_PWD/patches/apps/slack/env.d.ts.patch"
+echo "patched apps/slacks env.d.ts"
 cd "$CURR_PWD"

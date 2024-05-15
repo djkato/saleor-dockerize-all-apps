@@ -32,7 +32,7 @@ alias = "build-all"
 [tasks.build-all]
 workspace = false
 dependencies = [
-  "delete-images",
+  # "delete-images",
   "build-abandoned-checkouts",
   "build-stripe",
   "build-klarna",
@@ -47,8 +47,8 @@ dependencies = [
   "build-products-feed",
   "build-search",
   # "build-segment", -- Error: Unable to find 'schema-ast'
-  # "build-slack",  -- Error: 5.551 slack:build: Type error: Type '"redis"' is not comparable to type '"file" | "upstash" | "saleor-cloud"'.
-  # "build-smtp", -- 8.542 smtp:build: Type error: Cannot find module './redis_apl' or its corresponding type declarations.
+  "build-slack",
+  "build-smtp",
   "build-taxjar",
 
 ]
