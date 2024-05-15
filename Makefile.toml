@@ -62,8 +62,10 @@ script = '''
 [tasks.push-all]
 workspace = false
 script = '''
-for i in ${ALL_APPS[*]}; do
-  docker push ${CONTAINER_PUSH_URL}/saleor-app-$i
+ALL_IMAGES=$(docker images -qa --filter "label=src=saleor-dockerize-all-apps" --format "{{.Repository}}:{{.Tag}}")
+for i in ${ALL_IMAGES[*]}; do
+  echo "pushing $i.."
+  docker push $i
 done
 '''
 
