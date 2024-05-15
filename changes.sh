@@ -20,6 +20,7 @@ app_paths=(
 	"apps/apps/segment"
 	"apps/apps/slack"
 	"apps/apps/taxjar"
+	"apps/apps/smtp"
 	"saleor-app-abandoned-checkouts"
 	"saleor-app-payment-authorize.net"
 	"saleor-app-payment-klarna"
@@ -39,6 +40,7 @@ redis_apl_target_paths=(
 	"apps/apps/segment/src"
 	"apps/apps/slack/src/lib"
 	"apps/apps/taxjar"
+	"apps/apps/smtp/src"
 	"saleor-app-abandoned-checkouts"
 	"saleor-app-payment-authorize.net/src"
 	"saleor-app-payment-klarna/src"
@@ -100,3 +102,8 @@ for i in ${app_paths[*]}; do
 	echo "installed ioredis for $i"
 	cd "$CURR_PWD"
 done
+
+# Individual patches
+cd ./all_apps/apps
+git appy "$CURR_PWD/patches/apps/slack/env.d.ts.patch"
+cd "$CURR_PWD"

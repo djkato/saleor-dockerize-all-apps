@@ -32,7 +32,7 @@ RUN pnpm i
 
 # Build the project
 COPY --from=builder /app/out/full/ .
-RUN turbo run build --filter="$APP_NAME"...
+RUN HOSTNAME="0.0.0.0" turbo run build --filter="$APP_NAME"...
 
 
 FROM base AS runner
@@ -61,7 +61,7 @@ COPY --from=installer --chown=nextjs:nodejs /app/node_modules ./node_modules
 # COPY --from=installer --chown=nextjs:nodejs /app/node_modules/react/jsx-runtime ./node_modules/react/jsx-runtime
 
 WORKDIR /app/apps/$APP_DIR
-CMD node server.js
+CMD HOSTNAME="0.0.0.0" node server.js
 ARG SERVICE
 ARG TITLE
 ARG DESC

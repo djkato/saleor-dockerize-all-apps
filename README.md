@@ -29,7 +29,50 @@ Current apps in repo:
 
 All apps from saleor/apps are upwards of 1.5gb in size, because of [this pnpm workspace error](https://github.com/vercel/next.js/issues/65636)
 
-## How to use
+# How to use
+
+These images include RedisAPL, and that's what I recommend to use it with. Besides that, use it like any other docker image. 
+For example:
+
+```yml
+services:
+  app-payment-stripe:
+    image: ghcr.io/djkato/saleor-app-payment-stripe:0.4.0
+    env_file:
+      - stripe.env
+    networks:
+      - saleor-app-tier
+    depends_on:
+      - redis-apl
+    ports:
+      - 3001:3001
+
+  redis-apl:
+    image: bitnami/redis:latest
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - DISABLE_COMMANDS=FLUSHDB,FLUSHALL,CONFIG
+    ports:
+      - 6380:6379
+    networks:
+      - saleor-app-tier
+    volumes:
+      - redis-apl:/bitnami/redis/data
+
+volumes:
+  redis-apl:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./temp/volumes/redis/
+      o: bind
+
+networks:
+  saleor-app-tier:
+    driver: bridge
+```
+
+## How to build 
 - `./changes.sh` - applies git patches and batch edits via rust to add RedisAPL to all apps, and allow them to build via other tweaks.
 - `cargo make build-all` or `cargo make build-<Chosen app>`
 

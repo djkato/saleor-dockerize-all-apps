@@ -202,13 +202,13 @@ cd ../../
 
 docker build . --build-arg APP_NAME="${APP_NAME}" \
                --build-arg APP_DIR="${APP_DIR}" \
-               --build-arg SERVICE="saleor-app-${APP_NAME}" \
-               --build-arg TITLE="djkato/saleor-app-${APP_NAME}" \
-               --build-arg DESC="Saleor app for ${APP_NAME}" \
-               --build-arg URL="https://github.com/saleor/saleor-app-${APP_NAME}" \
+               --build-arg SERVICE="saleor-app-${APP_DIR}" \
+               --build-arg TITLE="djkato/saleor-app-${APP_DIR}" \
+               --build-arg DESC="Saleor app for ${APP_DIR}" \
+               --build-arg URL="https://github.com/saleor/saleor-app-${APP_DIR}" \
                --build-arg SOURCE="https://github.com/djkato/saleor-dockerize-all-apps" \
                --build-arg AUTHORS="Saleor <hello@saleor.io>, Djkáťo <djkatovfx@gmail.com>" \
-               -t ${CONTAINER_PUSH_URL}/saleor-app-${APP_NAME}:${VERSION}
+               -t ${CONTAINER_PUSH_URL}/saleor-app-${APP_DIR}:${VERSION}
 '''
 
 [tasks.build-arg-old-app]
