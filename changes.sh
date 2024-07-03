@@ -5,7 +5,7 @@ REDIS_APL_PATH="$CURR_PWD/changes/snippets/redis_apl.ts"
 OLD_REDIS_APL_PATH="$CURR_PWD/changes/snippets/redis_apl_old_sdk.ts"
 APPS_DOCKERFILE_PATH="$CURR_PWD/apps.Dockerfile"
 OTHER_DOCKERFILE_PATH="$CURR_PWD/other.Dockerfile"
-DOCKERIGNORE_PATH = "$CURR_PWD/.dockerignore"
+DOCKERIGNORE_PATH="$CURR_PWD/.dockerignore"
 
 app_paths=(
 	"apps/apps/cms-v2"
@@ -74,7 +74,7 @@ find ./all_apps/apps -name "saleor-app.ts" -exec cargo run --package modify-sale
 echo "pached all_apps/apps/**/saleor-app.ts"
 
 find ./all_apps/apps -name "next.config.js" -exec cargo run --package modify-next-config -- {} \; >/dev/null 2>&1
-echo "pached all_apps/apps/**/saleor-app.ts"
+echo "pached all_apps/apps/**/next.config.js"
 
 find ./all_apps/saleor-app-abandoned-checkouts -name "saleor-app.ts" -exec cargo run --package modify-saleor-app -- {} \; >/dev/null 2>&1
 echo "pached all_apps/saleor-app-abandoned-checkouts/**/saleor-app.ts"

@@ -24,34 +24,44 @@ ALL_APPS = [
 workspace = false
 alias = "build"
 
+[tasks.update-repos]
+workspace = false
+script = '''
+git submodule foreach --recursive git reset --hard
+git submodule update --recursive --remote
+'''
+
 # Overrides the default build task
 [tasks.build]
 workspace = false
 alias = "build-all"
 
 [tasks.build-all]
-workspace = false
-dependencies = [
-  # "delete-images",
+run_task = { name = [
+  "delete-images",
   "build-abandoned-checkouts",
   "build-stripe",
   "build-klarna",
-  # "build-authorize-net", -- Error: 11.26 Type error: Cannot find module '../generated/graphql' or its corresponding type declarations.
+  "build-authorize-net",
   "build-avatax",
-  # "build-cms-v2", -- Error: Unable to find 'schema-ast'
-  # "build-crm", -- Error: Unable to find 'schema-ast'
+  "build-cms-v2",
+  "build-crm",
   "build-data-importer",
-  "build-emails-and-messages",
   "build-invoices",
   "build-klaviyo",
   "build-products-feed",
   "build-search",
-  # "build-segment", -- Error: Unable to find 'schema-ast'
+  "build-segment",
   "build-slack",
   "build-smtp",
   "build-taxjar",
-
-]
+], parallel = true }
+# segment: -- Error: Unable to find 'schema-ast'
+# crm: -- Error: Unable to find 'schema-ast'
+# cms-v2: -- Error: Unable to find 'schema-ast'
+# avatax: --  x Could not find the following tasks in project: build
+# authorize-net: -- Error: 11.26 Type error: Cannot find module '../generated/graphql' or its corresponding type declarations.
+workspace = false
 
 [tasks.apply-changes]
 workspace = false
@@ -80,8 +90,9 @@ docker push ${CONTAINER_PUSH_URL}/saleor-app-${APP}
 [tasks.delete-images]
 workspace = false
 script = '''
-for i in ${ALL_APPS[*]}; do
-  docker rmi -f $(docker image ls -q --filter=label=service=saleor-app-$i) 2>&1 || true
+ALL_IMAGES=$(docker images -qa --filter "label=src=saleor-dockerize-all-apps" --format "{{.Repository}}:{{.Tag}}")
+for i in ${ALL_IMAGES[*]}; do
+  docker rmi -f $i 2>&1 || true
 done
 '''
 
