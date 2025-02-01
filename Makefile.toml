@@ -2,20 +2,25 @@
 CONTAINER_PUSH_URL = "ghcr.io/djkato"
 ALL_APPS = [
   "abandoned-checkouts",
-  "payment-stripe",
-  "payment-klarna",
-  "payment-authorize.net",
+  "anonymization",
+  "authorize.net",
   "avatax",
+  "checkout-complete",
+  "checkout-prices",
+  "customer-insights",
   "cms-v2",
   "crm",
   "data-importer",
   "emails-and-messages",
   "invoices",
+  "klarna",
   "klaviyo",
   "products-feed",
+  "slack",
+  "stripe",
   "search",
   "segment",
-  "slack",
+  "shipstation",
   "smtp",
   "taxjar",
 ]
@@ -96,23 +101,60 @@ for i in ${ALL_IMAGES[*]}; do
 done
 '''
 
-[tasks.build-avatax]
+[tasks.build-anonymization]
 workspace = false
 extend = "build-arg-app"
 private = false
-env = { "APP_NAME" = "app-avatax", "APP_DIR" = "avatax" }
+env = { "APP_NAME" = "anonymization", "PATH" = "anonymization-app" }
+
+[tasks.build-abandoned-checkouts]
+workspace = false
+extend = "build-arg-app"
+private = false
+env = { "APP_NAME" = "abandoned-checkouts", "PATH" = "saleor-app-abandoned-checkouts", "PUBLIC_PATH" = "/app/src/public" }
+
+[tasks.build-authorize-net]
+workspace = false
+extend = "build-arg-app"
+private = false
+env = { "APP_NAME" = "authorize.net", "PATH" = "saleor-app-payment-authorize.net", "PUBLIC_PATH" = "/app/example/public" }
+
+[tasks.build-avatax]
+workspace = false
+extend = "build-arg-monorepo-app"
+private = false
+env = { "APP_NAME" = "app-avatax", "PATH" = "avatax" }
+
+[tasks.build-checkout-complete]
+workspace = false
+extend = "build-arg-app"
+private = false
+env = { "APP_NAME" = "checkout-complete", "PATH" = "checkout-complete-app" }
+
+
+[tasks.build-checkout-prices]
+workspace = false
+extend = "build-arg-app"
+private = false
+env = { "APP_NAME" = "checkout-prices", "PATH" = "saleor-app-customer-insights" }
+
+[tasks.build-customer-insights]
+workspace = false
+extend = "build-arg-app"
+private = false
+env = { "APP_NAME" = "customer-insights", "PATH" = "example-app-customer-insights" }
 
 [tasks.build-cms-v2]
 workspace = false
-extend = "build-arg-app"
+extend = "build-arg-monorepo-app"
 private = false
-env = { "APP_NAME" = "cms-v2", "APP_DIR" = "cms-v2" }
+env = { "APP_NAME" = "cms-v2", "PATH" = "cms-v2" }
 
 [tasks.build-crm]
 workspace = false
 extend = "build-arg-app"
 private = false
-env = { "APP_NAME" = "crm", "APP_DIR" = "crm" }
+env = { "APP_NAME" = "crm", "PATH" = "example-app-crm" }
 
 [tasks.build-data-importer]
 workspace = false
@@ -188,22 +230,10 @@ extend = "build-arg-old-app"
 private = false
 env = { "APP" = "payment-klarna", "PUBLIC_PATH" = "/app/public" }
 
-[tasks.build-abandoned-checkouts]
-workspace = false
-extend = "build-arg-old-app"
-private = false
-env = { "APP" = "abandoned-checkouts", "PUBLIC_PATH" = "/app/src/public" }
-
-[tasks.build-authorize-net]
-workspace = false
-extend = "build-arg-old-app"
-private = false
-env = { "APP" = "payment-authorize.net", "PUBLIC_PATH" = "/app/example/public" }
-
 
 ## GENERALIZED BUILD SCRIPTS
 
-[tasks.build-arg-app]
+[tasks.build-arg-monorepo-app]
 workspace = false
 private = true
 script = '''
@@ -216,15 +246,15 @@ cd ../../
 docker build . --build-arg APP_NAME="${APP_NAME}" \
                --build-arg APP_DIR="${APP_DIR}" \
                --build-arg SERVICE="saleor-app-${APP_DIR}" \
-               --build-arg TITLE="djkato/saleor-app-${APP_DIR}" \
-               --build-arg DESC="Saleor app for ${APP_DIR}" \
+               --build-arg TITLE="djkato/saleor-app-${APP_NAME}" \
+               --build-arg DESC="Saleor app for ${APP_NAME}" \
                --build-arg URL="https://github.com/saleor/saleor-app-${APP_DIR}" \
                --build-arg SOURCE="https://github.com/djkato/saleor-dockerize-all-apps" \
                --build-arg AUTHORS="Saleor <hello@saleor.io>, Djkáťo <djkatovfx@gmail.com>" \
                -t ${CONTAINER_PUSH_URL}/saleor-app-${APP_DIR}:${VERSION}
 '''
 
-[tasks.build-arg-old-app]
+[tasks.build-arg-app]
 workspace = false
 private = true
 script = '''
