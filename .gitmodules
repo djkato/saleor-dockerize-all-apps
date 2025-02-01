@@ -1,0 +1,51 @@
+[submodule "all_apps/apps"]
+	path = all_apps/apps
+	url = https://github.com/saleor/apps
+[submodule "all_apps/authorize.net"]
+	path = all_apps/authorize.net
+	url = https://github.com/saleor/saleor-app-payment-authorize.net
+[submodule "all_apps/stripe"]
+	path = all_apps/stripe
+	url = https://github.com/saleor/saleor-app-payment-stripe
+[submodule "all_apps/klarna"]
+	path = all_apps/klarna
+	url = https://github.com/saleor/saleor-app-payment-klarna
+[submodule "all_apps/abandoned-checkouts"]
+	path = all_apps/abandoned-checkouts
+	url = https://github.com/saleor/saleor-app-abandoned-checkouts
+[submodule "all_apps/slack"]
+	path = all_apps/slack
+	url = https://github.com/saleor/example-slack-app
+[submodule "all_apps/taxjar"]
+	path = all_apps/taxjar
+	url = https://github.com/saleor/example-app-taxjar
+[submodule "all_apps/invoices"]
+	path = all_apps/invoices
+	url = https://github.com/saleor/example-app-invoices
+[submodule "all_apps/crm"]
+	path = all_apps/crm
+	url = https://github.com/saleor/example-app-crm
+[submodule "all_apps/sendgrid"]
+	path = all_apps/sendgrid
+	url = https://github.com/saleor/example-app-sendgrid
+[submodule "all_apps/customer-insights"]
+	path = all_apps/customer-insights
+	url = https://github.com/saleor/example-app-customer-insights
+[submodule "all_apps/shipstation"]
+	path = all_apps/shipstation
+	url = https://github.com/saleor/saleor-app-shipping-shipstation
+[submodule "all_apps/checkout-prices"]
+	path = all_apps/checkout-prices
+	url = https://github.com/saleor/saleor-app-checkout-prices
+[submodule "all_apps/anonymization"]
+	path = all_apps/anonymization
+	url = https://github.com/saleor/anonymization-app
+[submodule "all_apps/checkout-complete"]
+	path = all_apps/checkout-complete
+	url = https://github.com/saleor/checkout-complete-app
+[submodule "all_apps/emails-and-messages"]
+	path = all_apps/emails-and-messages
+	url = https://github.com/saleor/saleor-app-emails-and-messages
+[submodule "all_apps/data-importer"]
+	path = all_apps/data-importer
+	url = https://github.com/saleor/apps
